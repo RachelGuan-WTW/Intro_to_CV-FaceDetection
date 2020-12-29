@@ -12,8 +12,7 @@
 
 ## 关于比赛的基本信息
 1. 网址https://www.kesci.com/home/competition/5a6b51c4afceb51770d6a43a/content/3
-2. 数据集下载链接：https://pan.baidu.com/s/1OP_UL5VC84WjuNcB8N4Bmw 提取码：giyz 
-PPT链接：https://pan.baidu.com/s/1SahW9BP64egyHgH-yRmJqA 提取码：m4nm 
+2. 数据集
 
 3. CV的三大基本任务：分类、检测识别、分割
 4. 评估指标：分类问题（AUC、准确率等），检测识别（MAPE等），分割问题比较难
@@ -28,12 +27,30 @@ PPT链接：https://pan.baidu.com/s/1SahW9BP64egyHgH-yRmJqA 提取码：m4nm
 2. Tensorflow：深度学习
 - conda install tensorflow-gpu
 
-## 数据探索
+## 数据图片情况
 1. 图片大小不一致
 2. 脸部不规整，可能包含整个人，可能有多人
 3. 数据量很庞大
 
 ## 比赛程序的baseline
-Baseline链接：https://pan.baidu.com/s/1crVhtB0h_UWA2lw8KRU_tA 
 
-提取码：zij6 
+## 数据存储方式：
+1. 5个文件夹，每个文件夹放一类图片，文件夹的名称为分类编码
+2. 分为训练集和测试集，训练集包括一个文件夹存图片，另一个CSV文件存放标签和路径
+
+## 数据探索
+- 文件数（Linus bash脚本看，但是我不熟啊）
+```
+ls -l | grep '^-' | wc -l
+```
+ls:定位
+-l:定位当前文件夹中所有的文件
+|：通道
+grep '^-':正则表达式，定位到以-结尾的文件
+wc -l:统计当前文件夹的
+grep '^-':正则表达式，定位到以-结尾的文件
+grep '^-':正则表达式，定位到以-结
+- 
+
+
+
