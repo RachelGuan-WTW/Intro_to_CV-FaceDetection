@@ -43,14 +43,22 @@
 ```
 ls -l | grep '^-' | wc -l
 ```
-ls:定位
--l:定位当前文件夹中所有的文件
-|：通道
-grep '^-':正则表达式，定位到以-结尾的文件
-wc -l:统计当前文件夹的
-grep '^-':正则表达式，定位到以-结尾的文件
-grep '^-':正则表达式，定位到以-结
-- 
+解释：
+1. ls:定位
+2. -l:定位当前文件夹中所有的文件
+3. |：通道
+4. grep '^-':正则表达式，定位到以-结尾的文件
+5. wc -l:统计当前文件夹的文件数
+- 文件数（Python统计）
+```python
+import os
+import numpy as np
+lst_dir=os.listdir('./')#返回当前工作目录下的文件名，成为一个list
+for path in lst_dir:
+  if os.path.isdir(path):#判断路径是否合适
+    lst_jpg=os.listdir(path)
+    print(len(np.unique(lst_jpg)))#返回当前路径下的图片数
+```
 
 
 
