@@ -59,6 +59,11 @@ for path in lst_dir:
     lst_jpg=os.listdir(path)
     print(len(np.unique(lst_jpg)))#返回当前路径下的图片数
 ```
+## 工具选择
+1. OpenCV 读取和处理图像
+2. Tensorflow Keras 建模
+3. 其他三方包
 
+## 
 
 
