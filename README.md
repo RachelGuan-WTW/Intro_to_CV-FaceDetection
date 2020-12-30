@@ -126,7 +126,7 @@ TFRecords的使用分为以下几部分：
 每次随机抽取shuffle一部分作为一个batch,然后重复N遍，每一遍都是一个epoch;声明prefetch以GPU与CPU共同运行加速；生成循环iterator
 
 ## 卷积过程
-1. 常用的卷积
+1. 常用的卷积结构
+- 卷积
+2. 卷积层涉及到重要概念channel，padding（涉及参数SAME加padding和VALID不加padding），strides(步伐，滑动步数),kernel size, filters（不同channel使用不同kernel）, feature map（原矩阵通过kernel之后的结果）, [感受野](https://blog.csdn.net/program_developer/article/details/80958716)（输出结果在原矩阵上对应的范围）,
 
-[tfrecord](https://blog.csdn.net/chengshuhao1991/article/details/78656724?utm_medium=distribute.pc_relevant.none-task-blog-searchFromBaidu-1.not_use_machine_learn_pai&depth_1-utm_source=distribute.pc_relevant.none-task-blog-searchFromBaidu-1.not_use_machine_learn_pai)是一种二进制文件。模型
-[tfrecord](https://blog.csdn.net/chengshuhao1991/article/details/78656724?utm_medium=distribute.pc_relevant.none-task-blog-searchFromBaidu-1.not_use_machine_learn_pai&depth_1-utm_source=distribute.pc_relevant.none-task-blog-searchFromBaidu-1.not_use_machine_learn_pai)是一种二进制文件。
