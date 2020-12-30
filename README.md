@@ -66,6 +66,67 @@ for path in lst_dir:
 
 ## Pipeline
 1. 数据预处理：截取人脸(深度学习、传统视觉)-->放缩和裁剪（放缩可能会形变，按照最短边裁剪出正方形）-->图片格式转换（RGB转化为灰度图片，）-->落入数据集
-2. 模型建模：训练集和验证集划分（划分地址就好了）-->数据加载（因为图片很大，所以要随机加载一部分来训练；生成器）-->深度学习建模（损失函数、优化方法）-->模型训练（数据增强）-->预测
+2. 模型建模：训练集和验证集划分（分数据集的随机划分地址）-->数据加载（因为图片很大，所以要随机加载一部分来训练；生成器/数据增强）-->深度学习建模（损失函数、优化方法）-->模型训练-->预测
+- =============================
+- 截取人脸用到的PACKAGE:[FaceRecognition](https://github.com/ageitgey/face_recognition)-用于识别图片中的人脸；
+- 放缩裁剪用到的PACKAGE：cv2(transform the image from color to black-white, from black-white to gray, or from RGB to Hue Saturation and Value);
+- 图片处理的标准库：[from PIL import Image](https://pillow.readthedocs.io/en/stable/reference/Image.html)可以将图片转化为数字矩阵
+- 落入数据集采用TFRECORD：见下一部分
+- 划分训练集和测试集使用np.random.choice随机选取，glob.glob提取指定路径下的所有文件路径
 
 
+## TFRecords讲解
+[tfrecord](https://blog.csdn.net/chengshuhao1991/article/details/78656724?utm_medium=distribute.pc_relevant.none-task-blog-searchFromBaidu-1.not_use_machine_learn_pai&depth_1-utm_source=distribute.pc_relevant.none-task-blog-searchFromBaidu-1.not_use_machine_learn_pai)是一种二进制文件。
+TFRecords的使用分为以下几部分：
+1. 生成TFRecords文件
+2. 解析TFRecords文件：
+3. 建模中调用TFRecords文件
+
+在图像处理的过程中，常常会结合几个包一起使用：
+- pillow:图片处理的标准包
+- tqdm：for循环时候显示进度
+- glob：读取某路径下面的文件
+
+1. [下列为通用的存储数据到TFRECORD的步骤](https://blog.csdn.net/qq_16234613/article/details/91493224)
+```
+    writer=tf.python_io.TFRecordWriter(filename)#创建一个tfrecord容器
+    for i in range(length):
+        image=Image.open(image_list[i])
+        if 'png' in image_list[i][-4:]:
+            if image.mode=='RGB':
+                r, g, b = image.split()
+                image = Image.merge("RGB", (r, g, b))
+            elif image.mode=='L':
+                pass
+            else:
+                r,g, b, a = image.split()
+                image = Image.merge("RGB", (r, g, b))
+        image=image.resize((139,139))
+        #这个地方就展开了
+        image_bytes=image.tobytes()#将图像转化为数字
+        #下列为定义tfrecord 的一个记录
+        features={}
+        features['image']=tf.train.Feature(bytes_list=tf.train.BytesList(value=[image_bytes]))
+        features['label']=tf.train.Feature(int64_list=tf.train.Int64List(value=[int(label_list[i])]))
+        tf_features=tf.train.Features(feature=features)
+        tf_example=tf.train.Example(features=tf_features)
+        tf_serialized=tf_example.SerializeToString()
+        writer.write(tf_serialized)
+    writer.close()
+```
+
+2. 解析TFRECORDS
+- 定义TFRrecords对应的类型
+- 大小调整：reshape
+- 图像增强：图像旋转，变换亮度调整使用的是tf.image
+- 数据矩阵的归一化
+- 标签是否要onehot处理
+
+3. 建模中调用TFRecords文件
+每次随机抽取shuffle一部分作为一个batch,然后重复N遍，每一遍都是一个epoch;声明prefetch以GPU与CPU共同运行加速；生成循环iterator
+
+## 卷积过程
+1. 常用的卷积
+
+[tfrecord](https://blog.csdn.net/chengshuhao1991/article/details/78656724?utm_medium=distribute.pc_relevant.none-task-blog-searchFromBaidu-1.not_use_machine_learn_pai&depth_1-utm_source=distribute.pc_relevant.none-task-blog-searchFromBaidu-1.not_use_machine_learn_pai)是一种二进制文件。模型
+[tfrecord](https://blog.csdn.net/chengshuhao1991/article/details/78656724?utm_medium=distribute.pc_relevant.none-task-blog-searchFromBaidu-1.not_use_machine_learn_pai&depth_1-utm_source=distribute.pc_relevant.none-task-blog-searchFromBaidu-1.not_use_machine_learn_pai)是一种二进制文件。
